@@ -145,6 +145,7 @@ void st7735::drawRLEBitmap(int widthInPixel, int height, int wx, int wy, int fgc
     int ready=0;
     int repeat;
     uint16_t color;
+    csOn();
     while(pixel<nbPixel)        
     {
         // load next
@@ -183,6 +184,7 @@ void st7735::drawRLEBitmap(int widthInPixel, int height, int wx, int wy, int fgc
     }
     if(ready)
         sendWords(ready,scrbuf);
+    csOff();
 }
 
 
