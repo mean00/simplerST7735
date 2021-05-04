@@ -137,6 +137,7 @@ void st7735::drawRLEBitmap(int widthInPixel, int height, int wx, int wy, int fgc
     
     int nbPixel=widthInPixel*height;
     int pixel=0;
+    csOn();
     setAddress(wx, wy,  widthInPixel, height);
     dataMode();
     int mask=0;
@@ -145,7 +146,7 @@ void st7735::drawRLEBitmap(int widthInPixel, int height, int wx, int wy, int fgc
     int ready=0;
     int repeat;
     uint16_t color;
-    csOn();
+    
     while(pixel<nbPixel)        
     {
         // load next
