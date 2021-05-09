@@ -4,6 +4,9 @@
  */
 #include "gd32ST7735.h"
 #include "simplerST7735_priv.h"
+#include "lnDma.h"
+
+#define SPI_USE_DMA 
 /**
  * 
  * @param w
@@ -14,11 +17,9 @@
  */
 gd32ST7735::gd32ST7735(int w, int h, hwlnSPIClass *spi, int  pinDc, int pinCS) :  st7735(w,h,pinDc,pinCS)
 {
-
     _spi=spi;
     _PhysicalXoffset=1;
     _PhysicalYoffset=26;
-    
 }
 /**
  * 
@@ -66,6 +67,8 @@ void gd32ST7735::init()
       gp+=size+3;        
   }   
   digitalWrite(_pinCS,HIGH);    
+  
+  
 }
 /**
  * 
@@ -99,8 +102,12 @@ void gd32ST7735::sendBytes(int nb, const uint8_t *data)
  */
 void gd32ST7735::sendWords(int nb, const uint16_t *data)
 {
-    for(int i=0;i<nb;i++)
-        _spi->write16(data[i]);
+#ifdef SPI_USE_DMA      
+    _spi->dmaWrite16(nb,data);
+#else
+     for(int i=0;i<nb;i++)
+          _spi->write16(data[i]);      
+#endif
 }
 /**
 * 
@@ -109,8 +116,12 @@ void gd32ST7735::sendWords(int nb, const uint16_t *data)
 */
 void gd32ST7735::floodWords(int nb, const uint16_t data)
 {
-  for(int i=0;i<nb;i++)
-      sendWord(data);
+#ifdef SPI_USE_DMA  
+      _spi->dmaWrite16Repeat(nb,data);
+#else
+      for(int i=0;i<nb;i++)
+          _spi->write16(data);      
+#endif
 }
   
 static const uint8_t rotMode[4]={0x8,0xc8,0x78,0xa8};
