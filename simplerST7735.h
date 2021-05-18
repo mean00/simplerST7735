@@ -3,7 +3,7 @@
  *  See license file
  */
 #pragma once
-#include "lnArduino.h"
+#include "Arduino.h"
 #include "gfxfont.h"
 
 struct _current_font
@@ -62,7 +62,11 @@ public:
                 void square(int color, int x, int y, int w, int g);
                 void setRotation(int rotation);  // 0 1 2 3
                 void push2Colors(uint8_t *data, int len, boolean first,uint16_t fg, uint16_t bg);
-            
+                void setCursor(int x, int y)
+                {
+                     cursor_x=x;
+                     cursor_y=y;
+                }
 protected:
                 int _physicalWidth;
                 int _physicalHeight;
@@ -82,12 +86,32 @@ protected:
                 void baseInit();
                 
 public: // freetype font
+                void    setTextColor(int fg,int bg)
+                {
+                    _fg=fg;
+                    _bg=bg;
+                }
                 int     myDrawChar(int x, int y, unsigned char c,  int color, int bg,FontInfo &infos);
                 void    square(int x,int y,int w, int h, bool color);
                 void    setFontSize(FontSize size);
                 void    setFontFamily(const GFXfont *small, const GFXfont *medium, const GFXfont *big);
                 void    print(int x,int y,const char *z);
                 int     writeChar(char c);
+                void    print(const char *data)
+                {
+                    int s=strlen(data);
+                    for(int i=0;i<s;i++)
+                        writeChar(data[i]);
+                }
+                 void    print(int a)
+                {
+                    char bf[10];
+                    sprintf(bf,"%d",a);
+                    int s=strlen(bf);
+                    for(int i=0;i<s;i++)
+                        writeChar(bf[i]);
+                }
+                void    putPixel(int x,int y, int color);
                 void    drawRLEBitmap(int widthInPixel, int height, int wx, int wy, int fgcolor, int bgcolor, const uint8_t *data);
                 
 protected:

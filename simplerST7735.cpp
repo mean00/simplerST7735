@@ -3,6 +3,7 @@
  *  See license file
  */
 #include "simplerST7735.h"
+#include "simplerST7735_priv.h"
 
 /**
  * 
@@ -119,6 +120,7 @@ void st7735::square(int color, int x, int y, int w, int h)
     floodWords(f,color);
     csOff();
 }
+ 
 /**
  * 
  * @param rotation
