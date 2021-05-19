@@ -24,7 +24,7 @@
 stm32duinoST7735::stm32duinoST7735(int w, int h,  int  pinDc, int pinCS) :  st7735(w,h,pinDc,pinCS)
 {
     _PhysicalXoffset=2;
-    _PhysicalYoffset=1;
+    _PhysicalYoffset=0;
 }
 /**
  * 
@@ -104,7 +104,7 @@ void stm32duinoST7735::init()
  */
 void stm32duinoST7735::sendByte(int byte)
 {
-    SPI.setDataSize (SPI_CR1_DFF_8_BIT); // Set spi 16bit mode  
+    SPI.setDataSize (DATA_SIZE_8BIT); // Set spi 16bit mode  
     SPI.write(byte);
 }
 /**
@@ -113,8 +113,8 @@ void stm32duinoST7735::sendByte(int byte)
  */
 void stm32duinoST7735::sendWord(int byte)
 {
-   SPI.setDataSize (SPI_CR1_DFF_16_BIT); 
-   SPI.write16(byte);
+   SPI.setDataSize (DATA_SIZE_16BIT); 
+   SPI.write(byte);
 }
 static const uint8_t rotMode[4]={0x8,0xc8,0x78,0xa8};
 /**
@@ -128,37 +128,36 @@ void stm32duinoST7735::updateHwRotation(void)
 #ifdef SPI_USE_DMA  
 void stm32duinoST7735::sendBytes(int nb, const uint8_t *data)
 {
-    SPI.setDataSize (SPI_CR1_DFF_8_BIT); // Set spi 16bit mode  
+    SPI.setDataSize (DATA_SIZE_8BIT); // Set spi 16bit mode  
     SPI.dmaSend(data, nb, false);
 }
 void stm32duinoST7735::sendWords(int nb, const uint16_t *data)
 {
-    SPI.setDataSize (SPI_CR1_DFF_16_BIT); // Set spi 16bit mode  
+    SPI.setDataSize (DATA_SIZE_16BIT); // Set spi 16bit mode  
     SPI.dmaSend(data, nb, false);
 }
 void stm32duinoST7735::floodWords(int nb, const uint16_t data)
 {
-    SPI.setDataSize (SPI_CR1_DFF_16_BIT); // Set spi 16bit mode  
+    SPI.setDataSize (DATA_SIZE_16BIT); // Set spi 16bit mode  
     SPI.dmaSend(&data, nb, true);
 }
 #else
 void stm32duinoST7735::sendBytes(int nb, const uint8_t *data)
 {
-    SPI.setDataSize (SPI_CR1_DFF_8_BIT); // Set spi 16bit mode  
+    SPI.setDataSize (DATA_SIZE_8BIT); // Set spi 16bit mode  
      for(int i=0;i<nb;i++)
           SPI.write(data[i]);      
 }
 void stm32duinoST7735::sendWords(int nb, const uint16_t *data)
 {
-    SPI.setDataSize (SPI_CR1_DFF_16_BIT); // Set spi 16bit mode  
-      for(int i=0;i<nb;i++)
-          SPI.write16(data[i]);      
+    SPI.setDataSize (DATA_SIZE_16BIT); // Set spi 16bit mode      
+    SPI.write(data,nb);      
 }
 void stm32duinoST7735::floodWords(int nb, const uint16_t data)
 {
-    SPI.setDataSize (SPI_CR1_DFF_16_BIT); // Set spi 16bit mode  
+    SPI.setDataSize (DATA_SIZE_16BIT); // Set spi 16bit mode  
    for(int i=0;i<nb;i++)
-          SPI.write16(data);      
+          SPI.write(data);      
 }
 
 
