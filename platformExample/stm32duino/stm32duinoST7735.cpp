@@ -12,7 +12,7 @@
 #include "simplerST7735_priv.h"
 #include "SPI.h"
 
-//#define SPI_USE_DMA 
+#define SPI_USE_DMA 
 /**
  * 
  * @param w
@@ -25,6 +25,7 @@ stm32duinoST7735::stm32duinoST7735(int w, int h,  int  pinDc, int pinCS) :  st77
 {
     _PhysicalXoffset=2;
     _PhysicalYoffset=0;
+    dataSize=0;
 }
 /**
  * 
@@ -104,8 +105,9 @@ void stm32duinoST7735::init()
  */
 void stm32duinoST7735::sendByte(int byte)
 {
-    SPI.setDataSize (DATA_SIZE_8BIT); // Set spi 16bit mode  
+    setSpiSize(8);
     SPI.write(byte);
+    
 }
 /**
  * 
@@ -113,7 +115,7 @@ void stm32duinoST7735::sendByte(int byte)
  */
 void stm32duinoST7735::sendWord(int byte)
 {
-   SPI.setDataSize (DATA_SIZE_16BIT); 
+   setSpiSize(16); 
    SPI.write(byte);
 }
 static const uint8_t rotMode[4]={0x8,0xc8,0x78,0xa8};
@@ -128,34 +130,35 @@ void stm32duinoST7735::updateHwRotation(void)
 #ifdef SPI_USE_DMA  
 void stm32duinoST7735::sendBytes(int nb, const uint8_t *data)
 {
-    SPI.setDataSize (DATA_SIZE_8BIT); // Set spi 16bit mode  
-    SPI.dmaSend(data, nb, false);
+    setSpiSize(8);
+    SPI.dmaSend(data, nb, true);
 }
 void stm32duinoST7735::sendWords(int nb, const uint16_t *data)
 {
-    SPI.setDataSize (DATA_SIZE_16BIT); // Set spi 16bit mode  
-    SPI.dmaSend(data, nb, false);
+    setSpiSize(16); 
+    SPI.dmaSend(data, nb, true);
 }
 void stm32duinoST7735::floodWords(int nb, const uint16_t data)
 {
-    SPI.setDataSize (DATA_SIZE_16BIT); // Set spi 16bit mode  
-    SPI.dmaSend(&data, nb, true);
+    setSpiSize(16); 
+    SPI.dmaSend(&data, nb, false);
 }
 #else
 void stm32duinoST7735::sendBytes(int nb, const uint8_t *data)
 {
-    SPI.setDataSize (DATA_SIZE_8BIT); // Set spi 16bit mode  
+    setSpiSize(8);
      for(int i=0;i<nb;i++)
           SPI.write(data[i]);      
 }
 void stm32duinoST7735::sendWords(int nb, const uint16_t *data)
 {
-    SPI.setDataSize (DATA_SIZE_16BIT); // Set spi 16bit mode      
+    setSpiSize(16); // Set spi 16bit mode      
     SPI.write(data,nb);      
 }
 void stm32duinoST7735::floodWords(int nb, const uint16_t data)
 {
-    SPI.setDataSize (DATA_SIZE_16BIT); // Set spi 16bit mode  
+    setSpiSize(16);
+    
    for(int i=0;i<nb;i++)
           SPI.write(data);      
 }
