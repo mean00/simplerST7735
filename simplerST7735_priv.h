@@ -2,7 +2,10 @@
  *  This is coming from adafruit driver
  */
 #pragma once
+#define ST7735_SWRESET 0x01
 #define ST7735_SLPOUT  0x11
+#define ST7735_NORON   0x13
+#define ST7735_INVOFF  0x20
 #define ST7735_INVON   0x21
 #define ST7735_DISPON  0x29
 #define ST7735_CASET   0x2A
