@@ -80,8 +80,8 @@ protected:
                 int _xOffset;
                 int _yOffset;
 protected:
-                void csOn();
-                void csOff();
+        virtual void csOn(); // Override this if you have a faster CS management (arduino/stm32duino)
+        virtual void csOff();
                 void sendCommand(uint8_t cmd, int size, const uint8_t *data);
                 void baseInit();
                 
