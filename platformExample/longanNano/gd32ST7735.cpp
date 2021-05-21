@@ -56,6 +56,7 @@ void gd32ST7735::init()
       0,ST7735_SLPOUT,   0xff,
       0xff
   };
+  
   const uint8_t *gp=init_sequence;
   digitalWrite(_pinCS,LOW);
   while(1)

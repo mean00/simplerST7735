@@ -1,4 +1,4 @@
-ADD_LIBRARY(ST7735 
+ADD_LIBRARY(simplerST7735 
             simplerST7735.cpp 
             simplerST7735_ex.cpp 
             simplerST7735_ex_ll.cpp 
