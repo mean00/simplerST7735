@@ -16,7 +16,7 @@
 class gd32ST7735 : public st7735
 {
     public:
-                     gd32ST7735(int w, int h, hwlnSPIClass *spi, int  pinDc, int pinCS);
+                     gd32ST7735(int w, int h, hwlnSPIClass *spi, int  pinDc, int pinCS, int offsetX=1,int offsetY=26);
              virtual ~gd32ST7735();
              virtual void init();
              virtual void sendByte(int byte); // 8 bytes

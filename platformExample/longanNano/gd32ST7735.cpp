@@ -15,11 +15,11 @@
  * @param pinDc
  * @param pinCS
  */
-gd32ST7735::gd32ST7735(int w, int h, hwlnSPIClass *spi, int  pinDc, int pinCS) :  st7735(w,h,pinDc,pinCS)
+gd32ST7735::gd32ST7735(int w, int h, hwlnSPIClass *spi, int  pinDc, int pinCS,int offsetX, int offsetY) :  st7735(w,h,pinDc,pinCS)
 {
     _spi=spi;
-    _PhysicalXoffset=1;
-    _PhysicalYoffset=26;
+    _PhysicalXoffset=offsetX;
+    _PhysicalYoffset=offsetY;
 }
 /**
  * 
